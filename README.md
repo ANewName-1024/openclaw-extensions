@@ -12,11 +12,27 @@
 | [FileTool](src/tools/file/) | 文件读写编辑 | ⭐⭐⭐ |
 | [GrepTool](src/tools/grep/) | 代码搜索 | ⭐⭐⭐ |
 
-### 2. MCP 客户端 (mcp)
+### 2. 记忆系统 (memory)
+
+基于 Claude Code 的记忆系统，支持持久化和会话记忆。
+
+| 模块 | 说明 | 优先级 |
+|------|------|--------|
+| [MemoryStore](src/memory/) | 记忆存储管理 | ⭐⭐⭐ |
+| [MemorySelector](src/memory/) | AI 相关性选择 | ⭐⭐⭐ |
+| [SessionMemory](src/memory/) | 会话自动摘要 | ⭐⭐ |
+
+**记忆类型**:
+- `user` - 用户角色、偏好、知识背景
+- `feedback` - 用户指导、纠正、确认
+- `project` - 项目状态、目标、截止日期
+- `reference` - 外部系统指针、文档位置
+
+### 3. MCP 客户端 (mcp)
 
 原生 MCP 协议支持，即插即用。
 
-### 3. 权限系统 (permissions)
+### 4. 权限系统 (permissions)
 
 | 模式 | 说明 |
 |------|------|
@@ -25,7 +41,7 @@
 | DENY | 默认拒绝 |
 | ALLOW | 默认允许 |
 
-### 4. 任务协调器 (coordinator)
+### 5. 任务协调器 (coordinator)
 
 多任务协调执行。
 
@@ -46,14 +62,14 @@ ls src/
 
 ```bash
 # 复制到 OpenClaw 扩展目录
-cp -r src/tools/bash /root/.openclaw/extensions/
-cp -r src/mcp /root/.openclaw/extensions/
+cp -r src/memory /root/.openclaw/extensions/
 ```
 
 ## 文档
 
-- [集成方案](docs/INTEGRATION.md)
-- [工具系统设计](docs/TOOLS.md)
+- [集成方案](docs/INTEGRATION_PLAN.md)
+- [工具系统设计](docs/Stage3_Tool_System.md)
+- [记忆系统详解](docs/Stage7_Memory_System.md)
 - [MCP 客户端](docs/MCP.md)
 - [权限系统](docs/PERMISSIONS.md)
 
