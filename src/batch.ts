@@ -2,7 +2,7 @@
  * Batch Operations - Bulk memory operations with transaction support
  */
 
-import type { Memory, MemoryType, MemoryScope } from './types/index.js'
+import type { Memory, MemoryType, MemoryScope } from './types-legacy/index.js'
 import { MemoryStore } from './store/MemoryStore.js'
 
 export interface BatchOperation {

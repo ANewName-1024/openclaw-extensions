@@ -25,12 +25,12 @@ import type {
   MemorySearchOptions,
   PaginationOptions,
   PaginatedResult,
-} from '../types/index.js'
-import { normalizePagination } from '../types/index.js'
+} from '../types-legacy/index.js'
+import { normalizePagination } from '../types-legacy/index.js'
 import {
   MEMORY_TYPES,
   DEFAULT_MEMORY_CONFIG,
-} from '../types/index.js'
+} from '../types-legacy/index.js'
 
 // =============================================================================
 // MemoryStore

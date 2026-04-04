@@ -2,7 +2,7 @@
  * TTL Cleanup - Automatic expiration and cleanup of old memories
  */
 
-import type { MemoryConfig, MemoryHeader } from './types/index.js'
+import type { MemoryConfig, MemoryHeader } from './types-legacy/index.js'
 import { MemoryStore } from './store/MemoryStore.js'
 
 export interface TTLCleanupResult {

@@ -9,8 +9,8 @@ import type {
   SessionMemoryConfig,
   SessionMemoryState,
   SessionTemplate,
-} from '../types/index.js'
-import { DEFAULT_MEMORY_CONFIG, DEFAULT_SESSION_MEMORY_TEMPLATE } from '../types/index.js'
+} from '../types-legacy/index.js'
+import { DEFAULT_MEMORY_CONFIG, DEFAULT_SESSION_MEMORY_TEMPLATE } from '../types-legacy/index.js'
 
 // =============================================================================
 // Session Memory Manager

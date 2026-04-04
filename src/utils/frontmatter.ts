@@ -2,8 +2,8 @@
  * Frontmatter Parser - YAML frontmatter parsing and serialization
  */
 
-import type { MemoryFrontmatter, ParsedMemory, MemoryType, MemoryScope } from '../types/index.js'
-import { MEMORY_TYPES } from '../types/index.js'
+import type { MemoryFrontmatter, ParsedMemory, MemoryType, MemoryScope } from '../types-legacy/index.js'
+import { MEMORY_TYPES } from '../types-legacy/index.js'
 
 // =============================================================================
 // Parser

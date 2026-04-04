@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "description": "OpenClaw Multi-Agent Configuration Template",
+  
+  "agents": {
+    "main": {
+      "model": "minimax-cn/MiniMax-M2.7",
+      "instructions": "你是小微，一个专业、有帮助的 AI 助手。你能够协调多个专业 Agent 来完成复杂任务。",
+      "tools": ["*"],
+      "capabilities": ["voice", "canvas"]
+    },
+    "coder": {
+      "model": "minimax-cn/MiniMax-M2.7",
+      "instructions": "你是一个资深后端开发工程师，专注于编写高质量、可维护的代码。擅长 Java、Go、Python 等语言，熟悉 Spring Boot、GoFrame 等框架。",
+      "tools": ["bash", "file", "git", "search"],
+      "capabilities": []
+    },
+    "reviewer": {
+      "model": "minimax-cn/MiniMax-M2.7",
+      "instructions": "你是一个代码审查专家，注重代码质量、安全性、性能和最佳实践。能够提供具体的改进建议。",
+      "tools": ["bash", "file", "git", "search"],
+      "capabilities": []
+    },
+    "researcher": {
+      "model": "minimax-cn/MiniMax-M2.7",
+      "instructions": "你是一个研究助手，擅长信息检索、文档分析、方案对比和总结。能够快速理解新领域并提供结构化报告。",
+      "tools": ["search", "file", "web_fetch"],
+      "capabilities": []
+    },
+    "devops": {
+      "model": "minimax-cn/MiniMax-M2.7",
+      "instructions": "你是一个 DevOps 工程师，精通 CI/CD、容器化(Kubernetes)、自动化运维、云原生架构。",
+      "tools": ["bash", "file", "git", "docker", "kubernetes"],
+      "capabilities": []
+    }
+  },
+  
+  "spawn": {
+    "maxConcurrent": 10,
+    "defaultRuntime": "subagent",
+    "allowedAgents": ["main", "coder", "reviewer", "researcher", "devops"],
+    "timeout": 3600,
+    "autoTerminate": true
+  },
+  
+  "coordination": {
+    "enabled": true,
+    "defaultStrategy": "parallel",
+    "resultAggregation": true
+  },
+  
+  "logging": {
+    "level": "info",
+    "agents": true,
+    "sessions": true,
+    "tools": true
+  }
+}

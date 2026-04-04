@@ -3,7 +3,7 @@
  */
 
 // Types
-export * from './types/index.js'
+export * from './types-legacy/index.js'
 
 // Core Store
 export { MemoryStore } from './store/MemoryStore.js'
@@ -77,8 +77,8 @@ import { MemoryStore } from './store/MemoryStore.js'
 import { MemorySelector } from './selector/MemorySelector.js'
 import { SessionMemoryManager } from './session/SessionMemory.js'
 import { TeamMemoryManager } from './team/TeamMemory.js'
-import type { MemoryConfig } from './types/index.js'
-import { DEFAULT_MEMORY_CONFIG } from './types/index.js'
+import type { MemoryConfig } from './types-legacy/index.js'
+import { DEFAULT_MEMORY_CONFIG } from './types-legacy/index.js'
 
 export interface MemorySystem {
   store: MemoryStore

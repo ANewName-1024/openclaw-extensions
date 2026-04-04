@@ -2,8 +2,8 @@
  * MemorySelector - AI-powered memory relevance selection
  */
 
-import type { MemoryHeader, AISelectionConfig } from '../types/index.js'
-import { DEFAULT_MEMORY_CONFIG } from '../types/index.js'
+import type { MemoryHeader, AISelectionConfig } from '../types-legacy/index.js'
+import { DEFAULT_MEMORY_CONFIG } from '../types-legacy/index.js'
 
 // =============================================================================
 // Selection Result

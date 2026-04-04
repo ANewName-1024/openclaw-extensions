@@ -2,7 +2,7 @@
  * Event System - Observer pattern for memory changes
  */
 
-import type { Memory, MemoryType } from './types/index.js'
+import type { Memory, MemoryType } from './types-legacy/index.js'
 
 export type MemoryEventType = 
   | 'memory:saved'

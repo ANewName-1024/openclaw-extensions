@@ -2,7 +2,7 @@
  * Cache Layer - In-memory cache for frequently accessed memories
  */
 
-import type { Memory, MemoryHeader } from './types/index.js'
+import type { Memory, MemoryHeader } from './types-legacy/index.js'
 
 interface CacheEntry<T> {
   data: T

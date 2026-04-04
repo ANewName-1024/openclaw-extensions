@@ -4,7 +4,7 @@
 
 import * as fs from 'fs/promises'
 import * as path from 'path'
-import type { Memory, MemoryType, MemoryScope } from './types/index.js'
+import type { Memory, MemoryType, MemoryScope } from './types-legacy/index.js'
 import { MemoryStore } from './store/MemoryStore.js'
 import { MemoryBatchProcessor } from './batch.js'
 

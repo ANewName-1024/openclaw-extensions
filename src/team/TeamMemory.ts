@@ -17,8 +17,8 @@ import type {
   MemoryHeader,
   MemoryType,
   TeamMemoryConfig,
-} from '../types/index.js'
-import { DEFAULT_MEMORY_CONFIG } from '../types/index.js'
+} from '../types-legacy/index.js'
+import { DEFAULT_MEMORY_CONFIG } from '../types-legacy/index.js'
 
 // =============================================================================
 // Team Memory Manager
