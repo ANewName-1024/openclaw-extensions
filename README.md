@@ -1,76 +1,94 @@
-# OpenClaw Extensions
+# OpenClaw Memory System Extensions
 
-基于 Claude Code 源码分析提取的 OpenClaw 扩展能力模块，统一集成了记忆系统、工具系统、MCP 客户端等企业级功能。
+企业级记忆系统扩展，为 OpenClaw 提供持久化、会话、团队记忆能力。支持 OpenClaw v2 插件架构。
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-## 📦 模块总览
+---
 
-| 模块 | 说明 | 优先级 |
-|------|------|--------|
-| [记忆系统](#记忆系统) | 持久化、会话、团队记忆 | ⭐⭐⭐ |
-| [工具系统](#工具系统) | 安全命令执行、文件操作 | ⭐⭐⭐ |
-| [MCP 客户端](#mcp-客户端) | 原生 MCP 协议支持 | ⭐⭐⭐ |
-| [权限系统](#权限系统) | 细粒度权限控制 | ⭐⭐⭐ |
-| [任务协调器](#任务协调器) | 多任务协调执行 | ⭐⭐ |
-| [安全模块](#安全模块) | 路径验证、输入清理 | ⭐⭐⭐ |
+## 版本历史
+
+### v1.1.0 (2026-04-06)
+**插件架构升级 - OpenClaw v2 兼容**
+
+- ✅ 升级为 OpenClaw v2 插件接口（`definePluginEntry`）
+- ✅ 新增 `openclaw.plugin.json` 清单，插件可被 OpenClaw 自动发现
+- ✅ 注册内存运行时（Memory Runtime）
+- ✅ 注册记忆提示段落（Memory Prompt Section）
+- ✅ 注册记忆刷新计划（Memory Flush Plan）
+- ✅ 修复 `dist/types/index.js` 缺失问题
+- ✅ 修复导出命名：`definePluginEntry` 来自压缩导出 `{ t }`
+
+> ⚠️ **Breaking Change**: `dist/index.js` 不再是纯 ESM 导出，增加了 OpenClaw 插件入口。
+
+### v1.0.0
+- 初始版本，包含完整的 MemoryStore、MemorySelector、SessionMemory、TeamMemory
 
 ---
 
-## 🚀 快速开始
+## 模块结构
 
-```bash
-# 克隆仓库
-git clone https://github.com/ANewName-1024/openclaw-extensions.git
-cd openclaw-extensions
-
-# 安装依赖
-npm install
-
-# 构建
-npm run build
-
-# 运行测试
-npm test
+```
+openclaw-extensions/
+├── dist/                          # ✅ 构建产物（直接使用）
+│   ├── index.js                   # 主入口（v2 插件 + 业务导出）
+│   ├── types/index.js             # 类型桥接（重新导出 types-legacy）
+│   ├── types-legacy/index.js      # 原始类型定义
+│   ├── store/MemoryStore.js       # 核心存储
+│   ├── selector/MemorySelector.js  # AI 选择器
+│   ├── session/SessionMemory.js   # 会话记忆
+│   ├── team/TeamMemory.js         # 团队记忆
+│   ├── security/                   # 安全模块
+│   ├── utils/                      # 工具函数
+│   ├── errors.js                   # 自定义错误
+│   ├── events.js                   # 事件系统
+│   ├── cache.js                    # 缓存层
+│   ├── batch.js                    # 批量操作
+│   ├── ttl.js                     # TTL 清理
+│   ├── import-export.js           # 导入导出
+│   ├── coordinator/               # 任务协调器
+│   ├── mcp/                       # MCP 客户端
+│   ├── permissions/               # 权限系统
+│   ├── tools/                     # 工具集
+│   └── memory-legacy/             # 遗留代码
+├── src/                           # TypeScript 源码
+├── docs/                          # 设计文档
+├── tests/                         # 测试用例
+├── openclaw.plugin.json           # ✅ OpenClaw v2 插件清单
+└── package.json
 ```
 
 ---
 
-## 📚 记忆系统
+## 安装为 OpenClaw 插件
 
-完整的企业级记忆系统，支持持久化、会话、团队记忆。
+### 方式一：Workspace 插件（推荐）
 
-### 核心模块
+在 OpenClaw workspace 中创建 junction：
 
-| 模块 | 文件 | 说明 |
-|------|------|------|
-| MemoryStore | `src/store/MemoryStore.ts` | 核心存储管理 |
-| MemorySelector | `src/selector/MemorySelector.ts` | AI 相关性选择 |
-| SessionMemory | `src/session/SessionMemory.ts` | 会话自动摘要 |
-| TeamMemory | `src/team/TeamMemory.ts` | 团队级记忆共享 |
+```powershell
+# 创建插件目录（必须是这个路径）
+mkdir "$env:USERPROFILE\.openclaw\extensions\memory-system"
 
-### 高级功能
+# 创建 junction 指向本仓库
+New-Item -ItemType Junction -Path "$env:USERPROFILE\.openclaw\extensions\memory-system" -Value "D:\path\to\openclaw-extensions"
+```
 
-| 模块 | 文件 | 说明 |
-|------|------|------|
-| MemoryCache | `src/cache.ts` | LRU + TTL 缓存 |
-| MemoryBatchProcessor | `src/batch.ts` | 批量操作 + 事务 |
-| TTLCleanupManager | `src/ttl.ts` | 自动过期清理 |
-| MemoryExporter | `src/import-export.ts` | JSON 导出 |
-| MemoryImporter | `src/import-export.ts` | JSON 导入 |
-| MemoryEventEmitter | `src/events.ts` | 事件通知 |
+### 方式二：从源码构建
 
-### 记忆类型
+```bash
+git clone https://github.com/ANewName-1024/openclaw-extensions.git
+cd openclaw-extensions
+npm install
+npm run build
+```
 
-| 类型 | 说明 | 作用域 |
-|------|------|--------|
-| `user` | 用户角色、偏好、知识背景 | private |
-| `feedback` | 用户指导、纠正、确认 | private/team |
-| `project` | 项目状态、目标、截止日期 | team |
-| `reference` | 外部系统指针、文档位置 | team |
+---
 
-### 使用示例
+## 作为库使用
+
+### 基础用法
 
 ```typescript
 import { createMemorySystem } from './dist/index.js'
@@ -94,207 +112,87 @@ const saved = await memory.store.save({
 const loaded = await memory.store.load('user', 'my-memory')
 console.log(loaded?.content)
 
-// 扫描所有记忆
+// 搜索
+const results = await memory.store.search({ type: 'user' })
+
+// 扫描
 const headers = await memory.store.scan()
-console.log(`Total memories: ${headers.length}`)
+```
 
-// 搜索记忆
-const memories = await memory.store.search({ type: 'user' })
+### 批量操作
 
-// 分页查询
-const page = await memory.store.scanPaginated({ page: 1, pageSize: 20 })
-
-// 事件订阅
-memory.store.on?.('memory:saved', (event) => {
-  console.log('Memory saved:', event.memoryName)
-})
-
-// 批量操作
+```typescript
 import { MemoryBatchProcessor } from './dist/batch.js'
+
 const processor = new MemoryBatchProcessor(memory.store, 5)
 const result = await processor.execute([
   { type: 'save', memory: { name: 'm1', type: 'user', content: '...', scope: 'private' } },
   { type: 'save', memory: { name: 'm2', type: 'user', content: '...', scope: 'private' } },
 ])
+```
 
-// 导入/导出
+### 导入/导出
+
+```typescript
 import { MemoryExporter, MemoryImporter } from './dist/import-export.js'
+
 const exporter = new MemoryExporter(memory.store)
 const data = await exporter.exportToJSON()
+
 const importer = new MemoryImporter(memory.store)
 await importer.importFromData(data, { overwrite: true })
 ```
 
 ---
 
-## 🔧 工具系统
-
-安全 Shell 命令执行和文件操作工具。
-
-| 模块 | 说明 |
-|------|------|
-| BashTool | 安全 Shell 命令执行 |
-| FileTool | 文件读写编辑 |
-| GrepTool | 代码搜索 |
-
-### 安全特性
-
-- 命令白名单
-- 参数验证
-- 超时控制
-- 输出截断
-
----
-
-## 🔌 MCP 客户端
-
-原生 MCP (Model Context Protocol) 协议支持，即插即用。
-
-### 特性
-
-- 自动服务发现
-- 工具调用
-- 资源访问
-- 提示模板
-
----
-
-## 🔐 权限系统
-
-| 模式 | 说明 |
-|------|------|
-| AUTO | AI 自动决策 |
-| ASK | 询问用户 |
-| DENY | 默认拒绝 |
-| ALLOW | 默认允许 |
-
-### 粒度控制
-
-- 按工具类型
-- 按文件路径
-- 按命令参数
-
----
-
-## 🎯 任务协调器
-
-多任务协调执行，支持：
-
-- 任务队列
-- 优先级调度
-- 并发控制
-- 结果聚合
-
----
-
-## 🛡️ 安全模块
+## 核心模块
 
 | 模块 | 文件 | 说明 |
 |------|------|------|
-| PathValidator | `src/security/pathValidator.ts` | 路径遍历防护 |
-| sanitizePathKey | 同上 | 输入清理 |
-| validatePathWithSymlinks | 同上 | Symlink 逃逸检测 |
+| MemoryStore | `dist/store/MemoryStore.js` | 核心存储，CRUD + 搜索 |
+| MemorySelector | `dist/selector/MemorySelector.js` | AI 相关性选择 |
+| SessionMemoryManager | `dist/session/SessionMemory.js` | 会话自动摘要 |
+| TeamMemoryManager | `dist/team/TeamMemory.js` | 团队级记忆共享 |
+| PathValidator | `dist/security/pathValidator.js` | 路径遍历防护 |
 
-### 安全防护
+---
+
+## 安全特性
 
 - ✅ 路径遍历防护 (`../`)
 - ✅ Symlink 逃逸检测
 - ✅ Null 字节防护
-- ✅ URL 编码攻击防护
 - ✅ Unicode 规范化攻击防护
-- ✅ 反斜杠防护
-- ✅ 文件大小限制
-- ✅ 文件数量限制
+- ✅ 文件大小/数量限制
 
 ---
 
-## 📁 项目结构
-
-```
-openclaw-extensions/
-├── src/
-│   ├── index.ts              # 主入口
-│   ├── types/                # 类型定义 (新版)
-│   ├── types-legacy/         # 类型定义 (旧版)
-│   ├── store/                # MemoryStore
-│   ├── session/              # SessionMemoryManager
-│   ├── team/                 # TeamMemoryManager
-│   ├── selector/             # MemorySelector
-│   ├── security/             # 安全模块
-│   ├── utils/                # 工具函数
-│   ├── errors.ts            # 自定义错误
-│   ├── events.ts            # 事件系统
-│   ├── cache.ts             # 缓存层
-│   ├── batch.ts             # 批量操作
-│   ├── ttl.ts               # TTL 清理
-│   ├── import-export.ts     # 导入导出
-│   ├── commands/            # 命令系统
-│   ├── coordinator/         # 任务协调器
-│   ├── mcp/                 # MCP 客户端
-│   ├── permissions/         # 权限系统
-│   ├── tools/               # 工具集
-│   └── memory-legacy/       # 遗留代码
-├── docs/                    # 详细文档
-├── tests/                   # 测试用例
-├── package.json
-├── tsconfig.json
-├── jest.config.js
-└── README.md
-```
-
----
-
-## 📖 文档
-
-详细文档请查看 [docs/](docs/) 目录：
-
-### 设计文档
-- [集成方案](docs/INTEGRATION_PLAN.md)
-- [核心架构](docs/Stage1_Core_Architecture.md)
-- [命令系统](docs/Stage2_Command_System.md)
-- [工具系统设计](docs/Stage3_Tool_System.md)
-- [核心逻辑](docs/Stage4_Core_Logic.md)
-- [高级特性](docs/Stage5_Advanced_Features.md)
-
-### 记忆系统
-- [记忆系统详解](docs/Stage7_Memory_System.md)
-- [高级记忆功能](docs/Stage7_Memory_System_Advanced.md)
-- [记忆系统 README](docs/Memory_System_README.md)
-
----
-
-## 🧪 测试
+## 开发
 
 ```bash
+# 安装依赖
+npm install
+
+# 类型检查
+npx tsc --noEmit
+
+# 运行测试
 npm test
+
+# 重新构建
+npm run build
 ```
 
-### 测试覆盖
+---
 
-| 模块 | 测试数 | 说明 |
-|------|--------|------|
-| MemoryStore | 13 | CRUD 操作 |
-| SessionMemory | 5 | 会话管理 |
-| TeamMemory | 5 | 团队记忆 |
-| Security | 9 | 路径验证 |
-| Frontmatter | 7 | 序列化/反序列化 |
-| Events | 4 | 事件系统 |
-| Cache | 8 | 缓存层 |
-| Batch | 3 | 批量操作 |
-| TTL | 3 | 清理机制 |
-| Import/Export | 5 | 导入导出 |
-| Pagination | 4 | 分页查询 |
+## 相关文档
 
-**总计**: 86+ 测试用例
+- [记忆系统详解](docs/Stage7_Memory_System.md)
+- [高级记忆功能](docs/Stage7_Memory_System_Advanced.md)
+- [集成方案](docs/INTEGRATION_PLAN.md)
 
 ---
 
-## 📄 许可证
+## 许可证
 
-MIT License - 详见 [LICENSE](LICENSE) 文件
-
----
-
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
+MIT License
