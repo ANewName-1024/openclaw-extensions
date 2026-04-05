@@ -1,0 +1,27 @@
+{
+  "id": "memory-system",
+  "kind": "memory",
+  "type": "extension",
+  "name": "Memory System",
+  "version": "1.0.0",
+  "description": "Persistent, session, and team memory for AI assistants",
+  "main": "dist/index.js",
+  "permissions": [
+    "filesystem",
+    "memory"
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": true,
+    "properties": {
+      "directory": {
+        "type": "string",
+        "default": "./memory"
+      },
+      "maxFiles": {
+        "type": "number",
+        "default": 200
+      }
+    }
+  }
+}
