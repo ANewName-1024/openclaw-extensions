@@ -1,7 +1,7 @@
 {
-  "name": "@openclaw/memory",
-  "version": "1.0.0",
-  "description": "OpenClaw Memory System - Persistent, session, and team memory for AI assistants",
+  "name": "@openclaw/extensions",
+  "version": "1.2.0",
+  "description": "OpenClaw Extensions - Memory System & Task System for enterprise AI assistants",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",

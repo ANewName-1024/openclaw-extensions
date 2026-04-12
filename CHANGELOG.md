@@ -4,6 +4,30 @@
 
 ---
 
+## [v1.2.0] - 2026-04-12
+
+### ✨ 新增 TaskSystem 扩展
+
+**多会话协同任务管理系统**
+
+- ✅ Task File Protocol — 基于文件系统的任务状态共享
+  - 任务状态保存在 `memory/task/.active/`、`.done/`、`.failed/`
+  - 支持 INBOX → ASSIGNED → IN_PROGRESS → DONE/FAILED 状态流转
+- ✅ sessions_spawn 封装 — Worker 会话创建与管理
+  - `task-spawn.js` — 分配任务（由 Agent 调用 sessions_spawn）
+  - `task-status.js` — 查询任务状态
+  - `task-result.js` — 读取任务结果
+- ✅ 自动清理 — DONE/FAILED 状态自动迁移到对应目录
+  - `task-cleanup.js` — 清理孤儿任务和过期文件
+  - 支持 `--dry-run` 模拟运行
+  - 支持 `--all` 清理7天前已完成任务
+- ✅ 架构要点
+  - Task File 是唯一共享状态，主会话和 Worker 通过文件系统通信
+  - Worker 完成后通过飞书消息通知用户/主会话
+  - `sessions_spawn` 必须由 Agent 直接调用，外部脚本不能通过 HTTP RPC 调用
+
+---
+
 ## [v1.1.0] - 2026-04-06
 
 ### 🔧 插件架构升级
